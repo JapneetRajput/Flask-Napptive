@@ -17,12 +17,30 @@ if __name__ == "__main__":
 """
 
 from flask import Flask
+import mysql.connector
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 
 @app.route('/')
 def galaxy():
-    return app.send_static_file('index.html')
+    cnx = mysql.connector.connect(user="root",password="root",host="mysql",database="test")
+    cursor = cnx.cursor()
+
+    # Execute a query
+    query = 'SHOW DATABASES'
+    cursor.execute(query)
+
+    # Fetch the results
+    results = cursor.fetchall()
+
+    # Iterate through the results and print them
+#     for result in results:
+#         print(result)
+
+    # Close the cursor and connection
+    cursor.close()
+    cnx.close()
+    return results
 
 if __name__ == '__main__':
     #app.run(threaded=True, port=5000)
